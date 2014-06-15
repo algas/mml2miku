@@ -1,0 +1,34 @@
+body{
+    font-size:24px;
+}
+#content{
+    width:640px;
+    margin:0 auto;
+}
+h1{
+    font-size:32px;
+    font-weight:bolder;
+    text-align:center;
+}
+label{
+    display:block;
+}
+div:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+select{
+    width:100%;
+    height:48px;
+    font-size:24px;
+}
+textarea{
+    width:100%;
+    height:240px;
+}
+button{
+    width:50%;
+    height:48px;
+    float:left;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="Keywords" content="mml,webmidiapi,mml2miku">
+    <title>mml2miku</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.17.2/build/cssreset/cssreset-min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script src="js/midi-controller.js"></script>
+    <script src="js/mml2miku.js"></script>
+    <script>run();</script>
+</head>
+<body>
+    <div id="content">
+        <h1>mml2miku</h1>
+        <div id="device">
+            <form name="midiForm">
+                <label>MIDI Output:</label>
+                <select name="deviceIds" onChange="selectOutputDevice(this);">
+                    <option value="0">No Device</option>
+                </select>
+                <label>MML:</label>
+                <textarea id="mmlText" name="mmlText"></textarea>
+            </form>
+        </div>
+        <div>
+            <button onClick="playMML(document.midiForm.mmlText.value);">Play</button> 
+            <button onClick="stopMML();">Stop</button> 
+        </div>
+    </div>
+    <script>setOutputMenu(document.midiForm.deviceIds);</script>
+</body>
+</html>
