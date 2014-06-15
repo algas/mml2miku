@@ -17,7 +17,7 @@ After setup done, you can play mml music.
 
 [http://algas.github.io/mml2miku](http://algas.github.io/mml2miku)
 
-1. Access (demo)[http://algas.github.io/mml2miku] page with your web browser.
+1. Access [demo](http://algas.github.io/mml2miku) page with your web browser.
 2. Click OK for "?? requests full controll of midi devices."
 3. Select your midi output device.
 4. Write mml in the textarea.
