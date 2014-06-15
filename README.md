@@ -8,7 +8,7 @@ This is desined for nsx-39 "Miku keyboard".
 1. Connect your midi output device with your computer.
 2. Open Google Chrome web browser.
 3. Input the following text in address bar of the browser.  
-(chrome://flags/#enable-web-midi)[chrome://flags/#enable-web-midi]
+[chrome://flags/#enable-web-midi](chrome://flags/#enable-web-midi)
 4. Enable Web MIDI API.
 
 ## Demo
@@ -17,7 +17,7 @@ After setup done, you can play mml music.
 
 [http://algas.github.io/mml2miku](http://algas.github.io/mml2miku)
 
-1. Access [demo](http://algas.github.io/mml2miku) page with your web browser.
+1. Access (demo)[http://algas.github.io/mml2miku] page with your web browser.
 2. Click OK for "?? requests full controll of midi devices."
 3. Select your midi output device.
 4. Write mml in the textarea.
