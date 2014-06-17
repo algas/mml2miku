@@ -83,7 +83,7 @@ var MML2Miku;
             if (dotIndex < 0) {
                 return parseFloat(dotNum);
             } else {
-                return parseFloat(dotNum.slice(0, dotIndex)) * 1.5;
+                return parseFloat(dotNum.slice(0, dotIndex)) / 2.0 * 1.5;
             }
         };
 

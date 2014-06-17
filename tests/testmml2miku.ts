@@ -14,8 +14,11 @@ describe("MMLParser", () => {
         it("should return 4", () => {
             expect(parser.parseLength("l4").val).to.equal(4);
         });
-        it("should return 6", () => {
-            expect(parser.parseLength("l4.").val).to.equal(6);
+        it("should return 3", () => {
+            expect(parser.parseLength("l4.").val).to.equal(3);
+        });
+        it("should return 1.5", () => {
+            expect(parser.parseLength("l2.").val).to.equal(1.5);
         });
     });
 
@@ -93,8 +96,8 @@ describe("MMLParser", () => {
             expect(parser.parseNote("d4").extra).to.equal(2);
         });
 
-        it("should return 12", () => {
-            expect(parser.parseNote("g+8.").val).to.equal(12);
+        it("should return 6", () => {
+            expect(parser.parseNote("g+8.").val).to.equal(6);
         });
         it("should return 8", () => {
             expect(parser.parseNote("g+8.").extra).to.equal(8);
