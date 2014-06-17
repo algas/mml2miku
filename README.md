@@ -1,32 +1,31 @@
 # mml2miku
 
 MML (Music Macro Language) interpreter written in JavaScript.
-This is desined for nsx-39 "Miku keyboard".
+This is desined for nsx-39.
 
 ## Setup
 
-1. Connect your midi output device with your computer.
-2. Open Google Chrome web browser.
-3. Input the following text in address bar of the browser.  
-[chrome://flags/#enable-web-midi](chrome://flags/#enable-web-midi)
-4. Enable Web MIDI API.
+1. Connect your midi output device with your computer
+2. Open Google Chrome web browser
+3. Input the following text in address bar of the browser  
+chrome://flags/#enable-web-midi
+4. Enable Web MIDI API
 
 ## Demo
 
-After setup done, you can play mml music.
+To play demo, perform the following steps after setup.
 
 [http://algas.github.io/mml2miku](http://algas.github.io/mml2miku)
 
-1. Access [demo](http://algas.github.io/mml2miku) page with your web browser.
-2. Click OK for "?? requests full controll of midi devices."
-3. Select your midi output device.
-4. Write mml in the textarea.
-5. Click "play" and listen to your music!
+1. Access [demo](http://algas.github.io/mml2miku) page with your web browser
+2. Select your midi output device.
+3. Write mml in the textarea
+4. Click "play" and listen to your music
 
 ## Notice
 
 Current version supports  
-* only one channel (ch 0)
+* only one channel (ch 1)
 * only whitespace splitted grammer
 * no comment characters
 * no line breaks
@@ -37,12 +36,12 @@ Send me PR or issues!
 
 ## MML Reference
 
-See [mml reference](https://github.com/algas/mml2miku/docs/mml.md)
+See [mml reference](https://github.com/algas/mml2miku/blob/master/docs/mml.md)
 
 ## Test
 
-JavaScript test included.
-mocha, chai and phantom (mocha-phantom).
+JavaScript unit testing
+Mocha, Chai and Phantom (mocha-phantom)
 
 ## License
 
