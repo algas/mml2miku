@@ -43,17 +43,22 @@
         outputMenu = menu;
     }
 
-    var sendMessage = function(msg, delay) {
+    var sendMessage = function(msg) {
         if (outputDevices == null) {
             alert("No output MIDI devices.");
         } else {
             if (output == null) output = outputDevices[outputIndex];
-            if (delay == undefined || delay == null){
-                output.send(msg);
-            } else {
-                output.send(msg, delay);
-            }
+            output.send(msg);
         }
+    }
+
+    function sleep(time) {
+        var d1 = new Date().getTime();
+        var d2 = new Date().getTime();
+        while (d2 < d1 + time) {
+            d2 = new Date().getTime();
+        }
+        return;
     }
 
     var playMML = function (mmlText) {
@@ -65,19 +70,16 @@
             if (i < mmlData.length) {
                 mml = mmlData[i];
                 for (var j = 0; j < mml.length; j++) {
-                    if (mml[j].delay == undefined || mml[j].delay == null){
-                        this.sendMessage(mml[j].msg);
-                    } else {
-                        this.sendMessage(mml[j].msg, window.performance.now()+mml[j].delay);
-                    }
+                    sleep(mml[j].delay);
+                    this.sendMessage(mml[j].msg);
                 }
                 i++;
             }
-        }, 500);
+        }, 0);
     }
 
     var stopMML = function () {
-        output.send([0xb0,  0x78, 0x00], 0);
+        output.send([0xb0, 0x78, 0x00], 0);
         clearInterval(timerId);
     }
 

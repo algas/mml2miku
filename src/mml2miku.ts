@@ -328,7 +328,7 @@ module MIDI {
         msg: Array<number>;
         delay: number;
 
-        constructor(msg: Array<number>, delay?: number) {
+        constructor(msg: Array<number>, delay: number = 0) {
             this.msg = msg;
             this.delay = delay;
         }

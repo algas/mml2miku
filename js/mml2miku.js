@@ -393,6 +393,7 @@ var MIDI;
     // message
     var MIDIMessage = (function () {
         function MIDIMessage(msg, delay) {
+            if (typeof delay === "undefined") { delay = 0; }
             this.msg = msg;
             this.delay = delay;
         }
