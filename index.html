@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="Keywords" content="mml,webmidiapi,mml2miku">
+    <meta name="description" content="mml2miku demo page">
+    <meta name="keywords" content="mml,webmidiapi,mml2miku">
+    <meta name="author" content="Masahiro Yamauchi">
     <title>mml2miku</title>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.17.2/build/cssreset/cssreset-min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -26,6 +28,18 @@
         <div>
             <button onClick="playMML(document.midiForm.mmlText.value);">Play</button> 
             <button onClick="stopMML();">Stop</button> 
+        </div>
+        <h2>Example</h2>
+        <div>
+            <button onClick="playMML('t120 o5 l4 O HA YO c e g. r');">Hello</button> 
+        </div>
+        <h2>Links</h2>
+        <div>
+            <ul>
+                <li><a href="https://github.com/algas/mml2miku" target="_blank">Usage</a></li>
+                <li><a href="https://github.com/algas/mml2miku/blob/master/docs/mml.md" target="_blank">MML Command Reference</a></li>
+                <li><a href="http://otonanokagaku.net/nsx39/" target="_blank">nsx-39</a></li>
+            </ul>
         </div>
     </div>
     <script>setOutputMenu(document.midiForm.deviceIds);</script>
