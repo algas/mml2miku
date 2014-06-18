@@ -235,12 +235,23 @@ module MIDI {
         }
 
         toMessages (commands: Array<MIDICommand>): Array<Array<MIDIMessage>> {
-            var c: MIDICommand;
+            var c: MIDICommand = null;
             var msgs: Array<MIDIMessage> = [];
+            var voiceList: Array<Voice> = [];
+            var oldCommand: MIDICommand = null;
             var result: Array<Array<MIDIMessage>> = [];
             for (var i: number = 0; i < commands.length; i++){
                 c = commands[i];
-                if (c instanceof Note) {
+                if (oldCommand instanceof Voice){
+                    if (!(c instanceof Voice)) {
+                        msgs.push(this.voiceMsg(voiceList));
+                        voiceList = [];
+                    }
+                }
+                if (c instanceof Voice) {
+                    voiceList.push(c);
+                }
+                else if (c instanceof Note) {
                     msgs = this.noteMsg(c, msgs);
                     result.push(msgs);
                     msgs = [];
@@ -250,12 +261,10 @@ module MIDI {
                     result.push(msgs);
                     msgs = [];
                 }
-                else if (c instanceof Voice) {
-                    msgs.push(this.voiceMsg(c.val));
-                }
                 else {
                     this.setParameter(c);
                 }
+                oldCommand = c;
             }
             return result;
         }
@@ -272,6 +281,10 @@ module MIDI {
             var len = c.val > 0 ? c.val : this.len;
             msgs.push(this.noteOff(this.calcNote(this.octave, 0), this.calcDelay(this.tempo, len)));
             return msgs;
+        }
+
+        voiceMsg (voice: Array<Voice>, memory: number = 0x00): MIDIMessage {
+            return this.setVoice(voice.map( function(x){ return x.val; } ));
         }
 
         setParameter (c: MIDICommand) {
@@ -318,9 +331,15 @@ module MIDI {
             return new MIDIMessage([0x80, note, 0x00], delay);
         }
 
-        voiceMsg (voice: number, memory: number = 0x00): MIDIMessage {
-            return new MIDIMessage([0xf0, 0x43, 0x79, 0x09, 0x11, 0x0a, memory, voice, 0xf7]);
+        setVoice (voice: Array<number>, memory: number = 0x00): MIDIMessage {
+            var msg: Array<number> = [0xf0, 0x43, 0x79, 0x09, 0x11, 0x0a, memory];
+            for (var i: number = 0; i < voice.length; i++){
+                msg.push(voice[i]);
+            }
+            msg.push(0xf7);
+            return new MIDIMessage(msg);
         }
+
     }
 
     // message

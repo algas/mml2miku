@@ -304,12 +304,22 @@ var MIDI;
             this.voice = 0;
         }
         MIDIData.prototype.toMessages = function (commands) {
-            var c;
+            var c = null;
             var msgs = [];
+            var voiceList = [];
+            var oldCommand = null;
             var result = [];
             for (var i = 0; i < commands.length; i++) {
                 c = commands[i];
-                if (c instanceof Note) {
+                if (oldCommand instanceof Voice) {
+                    if (!(c instanceof Voice)) {
+                        msgs.push(this.voiceMsg(voiceList));
+                        voiceList = [];
+                    }
+                }
+                if (c instanceof Voice) {
+                    voiceList.push(c);
+                } else if (c instanceof Note) {
                     msgs = this.noteMsg(c, msgs);
                     result.push(msgs);
                     msgs = [];
@@ -317,11 +327,10 @@ var MIDI;
                     msgs = this.restMsg(c, msgs);
                     result.push(msgs);
                     msgs = [];
-                } else if (c instanceof Voice) {
-                    msgs.push(this.voiceMsg(c.val));
                 } else {
                     this.setParameter(c);
                 }
+                oldCommand = c;
             }
             return result;
         };
@@ -338,6 +347,13 @@ var MIDI;
             var len = c.val > 0 ? c.val : this.len;
             msgs.push(this.noteOff(this.calcNote(this.octave, 0), this.calcDelay(this.tempo, len)));
             return msgs;
+        };
+
+        MIDIData.prototype.voiceMsg = function (voice, memory) {
+            if (typeof memory === "undefined") { memory = 0x00; }
+            return this.setVoice(voice.map(function (x) {
+                return x.val;
+            }));
         };
 
         MIDIData.prototype.setParameter = function (c) {
@@ -382,9 +398,14 @@ var MIDI;
             return new MIDIMessage([0x80, note, 0x00], delay);
         };
 
-        MIDIData.prototype.voiceMsg = function (voice, memory) {
+        MIDIData.prototype.setVoice = function (voice, memory) {
             if (typeof memory === "undefined") { memory = 0x00; }
-            return new MIDIMessage([0xf0, 0x43, 0x79, 0x09, 0x11, 0x0a, memory, voice, 0xf7]);
+            var msg = [0xf0, 0x43, 0x79, 0x09, 0x11, 0x0a, memory];
+            for (var i = 0; i < voice.length; i++) {
+                msg.push(voice[i]);
+            }
+            msg.push(0xf7);
+            return new MIDIMessage(msg);
         };
         return MIDIData;
     })();
