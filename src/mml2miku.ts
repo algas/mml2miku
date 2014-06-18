@@ -159,15 +159,21 @@ module MML2Miku {
             return new MIDI.Voice(this.getVoice(re.exec(text)[1]));
         }
 
+        parseNoCommand (text?: string): MIDI.NoCommand {
+            return new MIDI.NoCommand();
+        }
+
         parseToCommands (text: string): Array<MIDI.MIDICommand> {
-            var cs: Array<string> = text.split(" ");
+            var cs: Array<string> = text.replace(/[\s\r\n]/g, " ").replace(/^\s*(.*?)\s*$/, "$1").split(" ");
             var c: string;
             var command: MIDI.MIDICommand;
             var commands: Array<MIDI.MIDICommand> = [];
             for (var i: number = 0; i < cs.length; i++) {
                 c = cs[i];
-                command = this.selectParser(c.charAt(0)).bind(this)(c);
-                commands.push(command);
+                if (c.length > 0) {
+                    command = this.selectParser(c.charAt(0)).bind(this)(c);
+                    commands.push(command);
+                }
             }
             return commands;
         }
@@ -178,7 +184,7 @@ module MML2Miku {
                     return this.prefixFunction[key];
                 }
             }
-            return null;
+            return this.parseNoCommand;
         }
 
         parseMML (text: string): Array<Array<MIDI.MIDIMessage>> {
@@ -213,6 +219,7 @@ module MIDI {
     export class Note extends MIDICommand {};
     export class Rest extends MIDICommand {};
     export class Voice extends MIDICommand {};
+    export class NoCommand extends MIDICommand {};
 
     // data
     export class MIDIData {

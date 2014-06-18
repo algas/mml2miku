@@ -116,6 +116,12 @@ describe("MMLParser", () => {
         });
     });
 
+    describe("parseNoCommand", () => {
+        it("should return null", () => {
+            expect(parser.parseNoCommand("  ").val).to.equal(undefined);
+        });
+    });
+
     describe("selectParser", () => {
         it("should return parseLength", () => {
             expect(parser.selectParser("l")).to.equal(parser.parseLength);
@@ -169,7 +175,11 @@ describe("MMLParser", () => {
             expect(parser.parseToCommands("o4 KA b2")[2].val).to.equal(2);
         });
         it("should return 11", () => {
-            expect(parser.parseToCommands("o4 KA b2")[2].extra).to.equal(11);
+            expect(parser.parseToCommands("o4 KA b2 |")[2].extra).to.equal(11);
+        });
+        it("should return undefined", () => {
+            expect(parser.parseToCommands(" |  | ")[0].val).to.equal(undefined);
+            expect(parser.parseToCommands(" |  | ")[1].val).to.equal(undefined);
         });
     });
 

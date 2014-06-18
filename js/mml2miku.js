@@ -165,15 +165,21 @@ var MML2Miku;
             return new MIDI.Voice(this.getVoice(re.exec(text)[1]));
         };
 
+        MMLParser.prototype.parseNoCommand = function (text) {
+            return new MIDI.NoCommand();
+        };
+
         MMLParser.prototype.parseToCommands = function (text) {
-            var cs = text.split(" ");
+            var cs = text.replace(/[\s\r\n]/g, " ").replace(/^\s*(.*?)\s*$/, "$1").split(" ");
             var c;
             var command;
             var commands = [];
             for (var i = 0; i < cs.length; i++) {
                 c = cs[i];
-                command = this.selectParser(c.charAt(0)).bind(this)(c);
-                commands.push(command);
+                if (c.length > 0) {
+                    command = this.selectParser(c.charAt(0)).bind(this)(c);
+                    commands.push(command);
+                }
             }
             return commands;
         };
@@ -184,7 +190,7 @@ var MML2Miku;
                     return this.prefixFunction[key];
                 }
             }
-            return null;
+            return this.parseNoCommand;
         };
 
         MMLParser.prototype.parseMML = function (text) {
@@ -290,6 +296,15 @@ var MIDI;
         return Voice;
     })(MIDICommand);
     MIDI.Voice = Voice;
+    ;
+    var NoCommand = (function (_super) {
+        __extends(NoCommand, _super);
+        function NoCommand() {
+            _super.apply(this, arguments);
+        }
+        return NoCommand;
+    })(MIDICommand);
+    MIDI.NoCommand = NoCommand;
     ;
 
     // data

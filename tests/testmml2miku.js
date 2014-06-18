@@ -116,6 +116,12 @@ describe("MMLParser", function () {
         });
     });
 
+    describe("parseNoCommand", function () {
+        it("should return null", function () {
+            expect(parser.parseNoCommand("  ").val).to.equal(undefined);
+        });
+    });
+
     describe("selectParser", function () {
         it("should return parseLength", function () {
             expect(parser.selectParser("l")).to.equal(parser.parseLength);
@@ -169,7 +175,11 @@ describe("MMLParser", function () {
             expect(parser.parseToCommands("o4 KA b2")[2].val).to.equal(2);
         });
         it("should return 11", function () {
-            expect(parser.parseToCommands("o4 KA b2")[2].extra).to.equal(11);
+            expect(parser.parseToCommands("o4 KA b2 |")[2].extra).to.equal(11);
+        });
+        it("should return undefined", function () {
+            expect(parser.parseToCommands(" |  | ")[0].val).to.equal(undefined);
+            expect(parser.parseToCommands(" |  | ")[1].val).to.equal(undefined);
         });
     });
 });
