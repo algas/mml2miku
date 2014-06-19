@@ -11,6 +11,17 @@ t120 o4 l4 A d-8 RI e4. GA d+ TO f2
 
 ## Command
 
+### Comment
+
+* /* comment */ : block comment
+* ; comment (line break) : line break comment
+
+### Dummy
+
+The following characters will replace with whitespace
+
+'|', '\t', '\r\n', '\n'
+
 ### Config
 
 A lower case character and numbers
