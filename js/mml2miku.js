@@ -1,3 +1,11 @@
+/*!
+* mml2miku JavaScript (TypeScript) Library v0.0.1
+* https://github.com/algas/mml2miku
+*
+* Copyright 2014 Masahiro Yamauchi
+* Released under the MIT license
+* https://github.com/algas/mml2miku/blob/master/LICENSE
+*/
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }

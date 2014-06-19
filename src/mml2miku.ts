@@ -1,3 +1,12 @@
+/*!
+ * mml2miku JavaScript (TypeScript) Library v0.0.1
+ * https://github.com/algas/mml2miku
+ *
+ * Copyright 2014 Masahiro Yamauchi
+ * Released under the MIT license
+ * https://github.com/algas/mml2miku/blob/master/LICENSE
+ */
+
 module MML2Miku {
     export class MMLParser {
         scale: { [solfa: string]: number; } = {
