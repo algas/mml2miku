@@ -27,8 +27,6 @@ To play demo, perform the following steps after setup.
 Current version supports  
 * only one channel (ch 1)
 * only whitespace splitted grammer
-* no comment characters
-* no line breaks
 * no repeatable brackets
 
 Under development :)
