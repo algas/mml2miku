@@ -363,6 +363,8 @@ var MIDI;
             var msgs = [];
             var voiceList = [];
             var oldCommand = null;
+            var noteList = [];
+            var n = null;
             var result = [];
             for (var i = 0; i < commands.length; i++) {
                 c = commands[i];
@@ -376,6 +378,16 @@ var MIDI;
                     voiceList.push(c);
                 } else if (c instanceof Note) {
                     msgs = this.noteMsg(c, msgs);
+                    if (c.val == 0) {
+                        noteList.push(c);
+                    } else {
+                        while (noteList.length > 0) {
+                            n = noteList.pop();
+                            n.val = 0;
+                            msgs.push(this.noteOff(n));
+                        }
+                        noteList = [];
+                    }
                     result.push(msgs);
                     msgs = [];
                 } else if (c instanceof Rest) {
@@ -393,14 +405,16 @@ var MIDI;
         MIDIData.prototype.noteMsg = function (c, msgs) {
             var n = this.calcNote(this.octave, c.extra);
             msgs.push(this.noteOn(n, this.velocity));
-            var len = c.val > 0 ? c.val : this.len;
-            msgs.push(this.noteOff(n, this.calcDelay(this.tempo, len)));
+            var len = c.val >= 0 ? c.val : this.len;
+            if (len > 0) {
+                msgs.push(this.noteOff(n, this.calcDelay(this.tempo, len)));
+            }
             return msgs;
         };
 
         MIDIData.prototype.restMsg = function (c, msgs) {
-            var len = c.val > 0 ? c.val : this.len;
-            msgs.push(this.noteOff(this.calcNote(this.octave, 0), this.calcDelay(this.tempo, len)));
+            var len = c.val >= 0 ? c.val : this.len;
+            msgs.push(this.noteOff(0, this.calcDelay(this.tempo, len)));
             return msgs;
         };
 

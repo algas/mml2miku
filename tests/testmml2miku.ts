@@ -290,6 +290,33 @@ describe("MIDIData", () => {
         });
     });
 
+    describe("noteMsg", () => {
+        it("should return [0x90,50,127]", () => {
+            expect(midi.noteMsg(new MIDI.Note(4, null, 2), [])[0].msg).to.eql([0x90,50,127]);
+        });
+        it("should return [0x80,50,0]", () => {
+            expect(midi.noteMsg(new MIDI.Note(4, null, 2), [])[1].msg).to.eql([0x80,50,0]);
+        });
+        it("should return 1000", () => {
+            expect(midi.noteMsg(new MIDI.Note(4, null, 2), [])[1].delay).to.equal(1000);
+        });
+        it("should return 1", () => {
+            expect(midi.noteMsg(new MIDI.Note(0, null, 2), []).length).to.equal(1);
+        });
+    });
+
+    describe("restMsg", () => {
+        it("should return [0x80, 0, 0]", () => {
+            expect(midi.restMsg(new MIDI.Rest(4), [])[0].msg).to.eql([0x80, 0, 0]);
+        });
+        it("should return [0x80, 0, 0]", () => {
+            expect(midi.restMsg(new MIDI.Rest(4), [])[1].msg).to.eql([0x80, 0, 0]);
+        });
+        it("should return 1000", () => {
+            expect(midi.restMsg(new MIDI.Rest(4), [])[1].delay).to.equal(1000);
+        });
+    });
+
     describe("voiceMsg", () => {
         it("should return [0xf0,0x43,0x79,0x09,0x11,0x0a,0,3,40,0xf7]", () => {
             expect(midi.voiceMsg([new MIDI.Voice(3),new MIDI.Voice(40)], 0).msg).to.eql([0xf0,0x43,0x79,0x09,0x11,0x0a,0,3,40,0xf7]);

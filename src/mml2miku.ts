@@ -298,6 +298,8 @@ module MIDI {
             var msgs: Array<MIDIMessage> = [];
             var voiceList: Array<Voice> = [];
             var oldCommand: MIDICommand = null;
+            var noteList: Array<Note> = [];
+            var n: Note = null;
             var result: Array<Array<MIDIMessage>> = [];
             for (var i: number = 0; i < commands.length; i++){
                 c = commands[i];
@@ -312,6 +314,16 @@ module MIDI {
                 }
                 else if (c instanceof Note) {
                     msgs = this.noteMsg(c, msgs);
+                    if (c.val == 0) {
+                        noteList.push(c);
+                    }
+                    else {
+                        while (noteList.length > 0) {
+                            n = noteList.pop();
+                            n.val = 0;
+                            msgs.push(this.noteOff(n));
+                        }
+                    }
                     result.push(msgs);
                     msgs = [];
                 }
@@ -331,14 +343,16 @@ module MIDI {
         noteMsg (c: Note, msgs: Array<MIDIMessage>): Array<MIDIMessage> {
             var n = this.calcNote(this.octave, c.extra);
             msgs.push(this.noteOn(n, this.velocity));
-            var len = c.val > 0 ? c.val : this.len;
-            msgs.push(this.noteOff(n, this.calcDelay(this.tempo, len)));
+            var len = c.val >= 0 ? c.val : this.len;
+            if (len > 0) {
+                msgs.push(this.noteOff(n, this.calcDelay(this.tempo, len)));
+            }
             return msgs;
         }
 
         restMsg (c: Rest, msgs: Array<MIDIMessage>): Array<MIDIMessage> {
-            var len = c.val > 0 ? c.val : this.len;
-            msgs.push(this.noteOff(this.calcNote(this.octave, 0), this.calcDelay(this.tempo, len)));
+            var len = c.val >= 0 ? c.val : this.len;
+            msgs.push(this.noteOff(0, this.calcDelay(this.tempo, len)));
             return msgs;
         }
 
