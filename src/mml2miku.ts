@@ -299,7 +299,6 @@ module MIDI {
             var voiceList: Array<Voice> = [];
             var oldCommand: MIDICommand = null;
             var noteList: Array<Note> = [];
-            var n: Note = null;
             var result: Array<Array<MIDIMessage>> = [];
             for (var i: number = 0; i < commands.length; i++){
                 c = commands[i];
@@ -319,9 +318,7 @@ module MIDI {
                     }
                     else {
                         while (noteList.length > 0) {
-                            n = noteList.pop();
-                            n.val = 0;
-                            msgs.push(this.noteOff(n));
+                            msgs.push(this.noteOff(noteList.pop().val));
                         }
                     }
                     result.push(msgs);

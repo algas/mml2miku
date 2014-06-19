@@ -309,11 +309,8 @@ describe("MIDIData", () => {
         it("should return [0x80, 0, 0]", () => {
             expect(midi.restMsg(new MIDI.Rest(4), [])[0].msg).to.eql([0x80, 0, 0]);
         });
-        it("should return [0x80, 0, 0]", () => {
-            expect(midi.restMsg(new MIDI.Rest(4), [])[1].msg).to.eql([0x80, 0, 0]);
-        });
         it("should return 1000", () => {
-            expect(midi.restMsg(new MIDI.Rest(4), [])[1].delay).to.equal(1000);
+            expect(midi.restMsg(new MIDI.Rest(4), [])[0].delay).to.equal(1000);
         });
     });
 

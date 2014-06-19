@@ -364,7 +364,6 @@ var MIDI;
             var voiceList = [];
             var oldCommand = null;
             var noteList = [];
-            var n = null;
             var result = [];
             for (var i = 0; i < commands.length; i++) {
                 c = commands[i];
@@ -382,11 +381,8 @@ var MIDI;
                         noteList.push(c);
                     } else {
                         while (noteList.length > 0) {
-                            n = noteList.pop();
-                            n.val = 0;
-                            msgs.push(this.noteOff(n));
+                            msgs.push(this.noteOff(noteList.pop().val));
                         }
-                        noteList = [];
                     }
                     result.push(msgs);
                     msgs = [];
