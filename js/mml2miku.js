@@ -1,5 +1,5 @@
 /*!
-* mml2miku JavaScript (TypeScript) Library v0.0.1
+* mml2miku JavaScript (TypeScript) Library v0.0.2
 * https://github.com/algas/mml2miku
 *
 * Copyright 2014 Masahiro Yamauchi
@@ -77,6 +77,8 @@ var MML2Miku;
                 "abcdefg": this.parseNote,
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ": this.parseVoice
             };
+            this.textFilter = null;
+            this.textFilter = new TextFilter();
         }
         MMLParser.prototype.getVoice = function (text) {
             return this.voice.indexOf(text);
@@ -178,7 +180,7 @@ var MML2Miku;
         };
 
         MMLParser.prototype.parseToCommands = function (text) {
-            var cs = text.replace(/[\s\r\n]/g, " ").replace(/^\s*(.*?)\s*$/, "$1").split(" ");
+            var cs = this.textFilter.run(text).split(" ");
             var c;
             var command;
             var commands = [];
@@ -209,6 +211,36 @@ var MML2Miku;
         return MMLParser;
     })();
     MML2Miku.MMLParser = MMLParser;
+
+    var TextFilter = (function () {
+        function TextFilter() {
+        }
+        TextFilter.prototype.commentOutBlock = function (text) {
+            return text.replace(/\/\*(.*?)\*\//g, " ");
+        };
+
+        TextFilter.prototype.commentOutLine = function (text) {
+            return text.replace(/;(.*?)(?:\r\n|\n|$)/g, " ");
+        };
+
+        TextFilter.prototype.strip = function (text) {
+            return text.replace(/^\s*(.*?)\s*$/, "$1");
+        };
+
+        TextFilter.prototype.replaceSeparators = function (text) {
+            return text.replace("|", " ");
+        };
+
+        TextFilter.prototype.removeDuplicates = function (text) {
+            return text.replace(/\s+/g, " ");
+        };
+
+        TextFilter.prototype.run = function (text) {
+            return this.strip(this.removeDuplicates(this.commentOutLine(this.replaceSeparators(this.strip(this.commentOutBlock(text))))));
+        };
+        return TextFilter;
+    })();
+    MML2Miku.TextFilter = TextFilter;
 })(MML2Miku || (MML2Miku = {}));
 
 var MIDI;

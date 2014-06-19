@@ -1,5 +1,5 @@
 /*!
- * mml2miku JavaScript (TypeScript) Library v0.0.1
+ * mml2miku JavaScript (TypeScript) Library v0.0.2
  * https://github.com/algas/mml2miku
  *
  * Copyright 2014 Masahiro Yamauchi
@@ -72,6 +72,12 @@ module MML2Miku {
             "abcdefg": this.parseNote,
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ": this.parseVoice,
         };
+
+        textFilter: TextFilter = null;
+
+        constructor () {
+            this.textFilter = new TextFilter();
+        }
 
         getVoice (text: string): number {
             return this.voice.indexOf(text);
@@ -173,7 +179,7 @@ module MML2Miku {
         }
 
         parseToCommands (text: string): Array<MIDI.MIDICommand> {
-            var cs: Array<string> = text.replace(/[\s\r\n]/g, " ").replace(/^\s*(.*?)\s*$/, "$1").split(" ");
+            var cs: Array<string> = this.textFilter.run(text).split(" ");
             var c: string;
             var command: MIDI.MIDICommand;
             var commands: Array<MIDI.MIDICommand> = [];
@@ -201,6 +207,43 @@ module MML2Miku {
             var data: MIDI.MIDIData = new MIDI.MIDIData();
             return data.toMessages(commands);
         }
+    }
+
+    export class TextFilter {
+        commentOutBlock (text: string): string {
+            return text.replace(/\/\*(.*?)\*\//g, " ");
+        }
+
+        commentOutLine (text: string): string {
+            return text.replace(/;(.*?)(?:\r\n|\n|$)/g, " ");
+        }
+
+        strip (text: string): string {
+            return text.replace(/^\s*(.*?)\s*$/, "$1");
+        }
+
+        replaceSeparators (text: string): string {
+            return text.replace("|", " ");
+        }
+
+        removeDuplicates (text: string): string {
+            return text.replace(/\s+/g," ");
+        }
+
+        run (text: string): string {
+            return this.strip(
+                this.removeDuplicates(
+                    this.commentOutLine(
+                        this.replaceSeparators(
+                            this.strip(
+                                this.commentOutBlock(text)
+                            )
+                        )
+                    )
+                )
+            );
+        }
+
     }
 
 }

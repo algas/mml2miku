@@ -178,12 +178,66 @@ describe("MMLParser", () => {
             expect(parser.parseToCommands("o4 KA b2 |")[2].extra).to.equal(11);
         });
         it("should return undefined", () => {
-            expect(parser.parseToCommands(" |  | ")[0].val).to.equal(undefined);
-            expect(parser.parseToCommands(" |  | ")[1].val).to.equal(undefined);
+            expect(parser.parseToCommands(" =  = ")[0].val).to.equal(undefined);
+            expect(parser.parseToCommands(" =  = ")[1].val).to.equal(undefined);
+        });
+    });
+
+
+});
+
+
+describe("TextFilter", () => {
+    var filter : MML2Miku.TextFilter;
+    beforeEach(() => {
+        filter = new MML2Miku.TextFilter();
+    });
+
+    describe("commentOutBlock", () => {
+        it("should return foo bar", () => {
+            expect(filter.commentOutBlock("foo/* buz */bar")).to.equal("foo bar");
+        });
+        it("should return a c d   f", () => {
+            expect(filter.commentOutBlock("a/* b */c d /* e */ f")).to.equal("a c d   f");
+        });
+    });
+
+    describe("commentOutLine", () => {
+        it("should return foo", () => {
+            expect(filter.commentOutLine("foo; bar")).to.equal("foo ");
+        });
+        it("should return hoge", () => {
+            expect(filter.commentOutLine("hoge; fuga\r\n")).to.equal("hoge ");
+            expect(filter.commentOutLine("hoge; fuga\n")).to.equal("hoge ");
+        });
+    });
+
+    describe("strip", () => {
+        it("should return foo bar", () => {
+            expect(filter.strip(" foo bar ")).to.equal("foo bar");
+        });
+    });
+
+    describe("replaceSeparators", () => {
+        it("should return foo bar", () => {
+            expect(filter.replaceSeparators("foo|bar")).to.equal("foo bar");
+        });
+    });
+
+    describe("removeDuplicates", () => {
+        it("should return foo bar", () => {
+            expect(filter.removeDuplicates("foo   bar")).to.equal("foo bar");
+        });
+    });
+
+    describe("run", () => {
+        it("should return foo bar", () => {
+            expect(filter.run(" foo /* buz*/ ; hoge \n bar |  ")).to.equal("foo bar");
         });
     });
 
 });
+
 
 describe("MIDIData", () => {
     var midi : MIDI.MIDIData;

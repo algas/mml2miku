@@ -178,8 +178,58 @@ describe("MMLParser", function () {
             expect(parser.parseToCommands("o4 KA b2 |")[2].extra).to.equal(11);
         });
         it("should return undefined", function () {
-            expect(parser.parseToCommands(" |  | ")[0].val).to.equal(undefined);
-            expect(parser.parseToCommands(" |  | ")[1].val).to.equal(undefined);
+            expect(parser.parseToCommands(" =  = ")[0].val).to.equal(undefined);
+            expect(parser.parseToCommands(" =  = ")[1].val).to.equal(undefined);
+        });
+    });
+});
+
+describe("TextFilter", function () {
+    var filter;
+    beforeEach(function () {
+        filter = new MML2Miku.TextFilter();
+    });
+
+    describe("commentOutBlock", function () {
+        it("should return foo bar", function () {
+            expect(filter.commentOutBlock("foo/* buz */bar")).to.equal("foo bar");
+        });
+        it("should return a c d   f", function () {
+            expect(filter.commentOutBlock("a/* b */c d /* e */ f")).to.equal("a c d   f");
+        });
+    });
+
+    describe("commentOutLine", function () {
+        it("should return foo", function () {
+            expect(filter.commentOutLine("foo; bar")).to.equal("foo ");
+        });
+        it("should return hoge", function () {
+            expect(filter.commentOutLine("hoge; fuga\r\n")).to.equal("hoge ");
+            expect(filter.commentOutLine("hoge; fuga\n")).to.equal("hoge ");
+        });
+    });
+
+    describe("strip", function () {
+        it("should return foo bar", function () {
+            expect(filter.strip(" foo bar ")).to.equal("foo bar");
+        });
+    });
+
+    describe("replaceSeparators", function () {
+        it("should return foo bar", function () {
+            expect(filter.replaceSeparators("foo|bar")).to.equal("foo bar");
+        });
+    });
+
+    describe("removeDuplicates", function () {
+        it("should return foo bar", function () {
+            expect(filter.removeDuplicates("foo   bar")).to.equal("foo bar");
+        });
+    });
+
+    describe("run", function () {
+        it("should return foo bar", function () {
+            expect(filter.run(" foo /* buz*/ ; hoge \n bar |  ")).to.equal("foo bar");
         });
     });
 });
