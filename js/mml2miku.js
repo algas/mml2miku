@@ -378,10 +378,10 @@ var MIDI;
                 } else if (c instanceof Note) {
                     msgs = this.noteMsg(c, msgs);
                     if (c.val == 0) {
-                        noteList.push(c);
+                        noteList.push(this.calcNote(this.octave, c.extra));
                     } else {
                         while (noteList.length > 0) {
-                            msgs.push(this.noteOff(noteList.pop().val));
+                            msgs.push(this.noteOff(noteList.pop(), 0));
                         }
                     }
                     result.push(msgs);

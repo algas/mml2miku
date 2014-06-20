@@ -298,7 +298,7 @@ module MIDI {
             var msgs: Array<MIDIMessage> = [];
             var voiceList: Array<Voice> = [];
             var oldCommand: MIDICommand = null;
-            var noteList: Array<Note> = [];
+            var noteList: Array<number> = [];
             var result: Array<Array<MIDIMessage>> = [];
             for (var i: number = 0; i < commands.length; i++){
                 c = commands[i];
@@ -314,11 +314,11 @@ module MIDI {
                 else if (c instanceof Note) {
                     msgs = this.noteMsg(c, msgs);
                     if (c.val == 0) {
-                        noteList.push(c);
+                        noteList.push(this.calcNote(this.octave, c.extra));
                     }
                     else {
                         while (noteList.length > 0) {
-                            msgs.push(this.noteOff(noteList.pop().val));
+                            msgs.push(this.noteOff(noteList.pop(), 0));
                         }
                     }
                     result.push(msgs);
@@ -338,9 +338,9 @@ module MIDI {
         }
 
         noteMsg (c: Note, msgs: Array<MIDIMessage>): Array<MIDIMessage> {
-            var n = this.calcNote(this.octave, c.extra);
+            var n: number = this.calcNote(this.octave, c.extra);
             msgs.push(this.noteOn(n, this.velocity));
-            var len = c.val >= 0 ? c.val : this.len;
+            var len: number = c.val >= 0 ? c.val : this.len;
             if (len > 0) {
                 msgs.push(this.noteOff(n, this.calcDelay(this.tempo, len)));
             }
@@ -348,7 +348,7 @@ module MIDI {
         }
 
         restMsg (c: Rest, msgs: Array<MIDIMessage>): Array<MIDIMessage> {
-            var len = c.val >= 0 ? c.val : this.len;
+            var len: number = c.val >= 0 ? c.val : this.len;
             msgs.push(this.noteOff(0, this.calcDelay(this.tempo, len)));
             return msgs;
         }
@@ -389,7 +389,7 @@ module MIDI {
             return 60.0 * 1000 * 4 / (tempo * len);
         }
 
-        calcNote (octave: number, scale: number) {
+        calcNote (octave: number, scale: number): number {
             return octave * 12 + scale;
         }
 
