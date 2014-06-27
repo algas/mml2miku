@@ -281,6 +281,18 @@ describe("MIDIData", () => {
         });
     });
 
+    describe("setVolume", () => {
+        it("should return [0xB0,0x07,64]", () => {
+            expect(midi.setVolume(64).msg).to.eql([0xB0,0x07,64]);
+        });
+    });
+
+    describe("changeProgram", () => {
+        it("should return [0xC0,3]", () => {
+            expect(midi.changeProgram(3).msg).to.eql([0xC0,3]);
+        });
+    });
+
     describe("setVoice", () => {
         it("should return [0xf0,0x43,0x79,0x09,0x11,0x0a,0,2,0xf7]", () => {
             expect(midi.setVoice([2], 0).msg).to.eql([0xf0,0x43,0x79,0x09,0x11,0x0a,0,2,0xf7]);
@@ -340,11 +352,6 @@ describe("MIDIData", () => {
             midi.toMessages([new MIDI.Octave(null, -1)]);
             expect(midi.octave).to.equal(5);
         });
-        it("volume should return 64", () => {
-            expect(midi.volume).to.equal(127);
-            midi.toMessages([new MIDI.Volume(64)]);
-            expect(midi.volume).to.equal(64);
-        });
         it("velocity should return 10", () => {
             expect(midi.velocity).to.equal(127);
             midi.toMessages([new MIDI.Velocity(10)]);
@@ -353,11 +360,6 @@ describe("MIDIData", () => {
             expect(midi.velocity).to.equal(20);
             midi.toMessages([new MIDI.Velocity(null, -10)]);
             expect(midi.velocity).to.equal(10);
-        });
-        it("program should return 64", () => {
-            expect(midi.program).to.equal(0);
-            midi.toMessages([new MIDI.Program(5)]);
-            expect(midi.program).to.equal(5);
         });
     });
 
@@ -378,10 +380,6 @@ describe("MIDIData", () => {
             midi.setParameter(new MIDI.Octave(null, 1));
             expect(midi.octave).to.equal(5);
         });
-        it("volume should return 55", () => {
-            midi.setParameter(new MIDI.Volume(55));
-            expect(midi.volume).to.equal(55);
-        });
         it("velocity should return 5", () => {
             midi.setParameter(new MIDI.Velocity(5));
             expect(midi.velocity).to.equal(5);
@@ -389,10 +387,6 @@ describe("MIDIData", () => {
             expect(midi.velocity).to.equal(4);
             midi.setParameter(new MIDI.Velocity(null, 1));
             expect(midi.velocity).to.equal(5);
-        });
-        it("program should return 55", () => {
-            midi.setParameter(new MIDI.Program(42));
-            expect(midi.program).to.equal(42);
         });
     });
 

@@ -1,5 +1,5 @@
 /*!
-* mml2miku JavaScript (TypeScript) Library v0.0.2
+* mml2miku JavaScript (TypeScript) Library v0.0.3
 * https://github.com/algas/mml2miku
 *
 * Copyright 2014 Masahiro Yamauchi
@@ -353,9 +353,7 @@ var MIDI;
             this.len = 4;
             this.tempo = 60;
             this.octave = 4;
-            this.volume = 127;
             this.velocity = 127;
-            this.program = 0;
             this.voice = 0;
         }
         MIDIData.prototype.toMessages = function (commands) {
@@ -390,6 +388,10 @@ var MIDI;
                     msgs = this.restMsg(c, msgs);
                     result.push(msgs);
                     msgs = [];
+                } else if (c instanceof Volume) {
+                    msgs = this.volumeMsg(c, msgs);
+                } else if (c instanceof Program) {
+                    msgs = this.programMsg(c, msgs);
                 } else {
                     this.setParameter(c);
                 }
@@ -414,6 +416,16 @@ var MIDI;
             return msgs;
         };
 
+        MIDIData.prototype.volumeMsg = function (c, msgs) {
+            msgs.push(this.setVolume(c.val));
+            return msgs;
+        };
+
+        MIDIData.prototype.programMsg = function (c, msgs) {
+            msgs.push(this.changeProgram(c.val));
+            return msgs;
+        };
+
         MIDIData.prototype.voiceMsg = function (voice, memory) {
             if (typeof memory === "undefined") { memory = 0x00; }
             return this.setVoice(voice.map(function (x) {
@@ -434,16 +446,12 @@ var MIDI;
                 } else {
                     this.octave = c.val;
                 }
-            } else if (c instanceof Volume) {
-                this.volume = c.val;
             } else if (c instanceof Velocity) {
                 if (c.val == null) {
                     this.velocity += c.diff;
                 } else {
                     this.velocity = c.val;
                 }
-            } else if (c instanceof Program) {
-                this.program = c.val;
             }
         };
 
@@ -461,6 +469,14 @@ var MIDI;
 
         MIDIData.prototype.noteOff = function (note, delay) {
             return new MIDIMessage([0x80, note, 0x00], delay);
+        };
+
+        MIDIData.prototype.setVolume = function (volume) {
+            return new MIDIMessage([0xB0, 0x07, volume]);
+        };
+
+        MIDIData.prototype.changeProgram = function (program) {
+            return new MIDIMessage([0xC0, program]);
         };
 
         MIDIData.prototype.setVoice = function (voice, memory) {

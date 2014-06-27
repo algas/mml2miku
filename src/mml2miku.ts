@@ -1,5 +1,5 @@
 /*!
- * mml2miku JavaScript (TypeScript) Library v0.0.2
+ * mml2miku JavaScript (TypeScript) Library v0.0.3
  * https://github.com/algas/mml2miku
  *
  * Copyright 2014 Masahiro Yamauchi
@@ -278,18 +278,14 @@ module MIDI {
         len: number;
         tempo: number;
         octave: number;
-        volume: number;
         velocity: number;
-        program: number;
         voice: number;
 
         constructor() {
             this.len = 4;
             this.tempo = 60;
             this.octave = 4;
-            this.volume = 127;
             this.velocity = 127;
-            this.program = 0;
             this.voice = 0;
         }
 
@@ -329,6 +325,12 @@ module MIDI {
                     result.push(msgs);
                     msgs = [];
                 }
+                else if (c instanceof Volume) {
+                    msgs = this.volumeMsg(c, msgs);
+                }
+                else if (c instanceof Program) {
+                    msgs = this.programMsg(c, msgs);
+                }
                 else {
                     this.setParameter(c);
                 }
@@ -353,6 +355,16 @@ module MIDI {
             return msgs;
         }
 
+        volumeMsg (c: Volume, msgs: Array<MIDIMessage>): Array<MIDIMessage> {
+            msgs.push(this.setVolume(c.val));
+            return msgs;
+        }
+
+        programMsg (c: Program, msgs: Array<MIDIMessage>): Array<MIDIMessage> {
+            msgs.push(this.changeProgram(c.val));
+            return msgs;
+        }
+
         voiceMsg (voice: Array<Voice>, memory: number = 0x00): MIDIMessage {
             return this.setVoice(voice.map( function(x){ return x.val; } ));
         }
@@ -371,8 +383,6 @@ module MIDI {
                 else {
                     this.octave = c.val;
                 }
-            } else if (c instanceof Volume) {
-                this.volume = c.val;
             } else if (c instanceof Velocity) {
                 if (c.val == null) {
                     this.velocity += c.diff;
@@ -380,8 +390,6 @@ module MIDI {
                 else {
                     this.velocity = c.val;
                 }
-            } else if (c instanceof Program) {
-                this.program = c.val;
             }
         }
 
@@ -399,6 +407,14 @@ module MIDI {
 
         noteOff (note: number, delay?: number): MIDIMessage {
             return new MIDIMessage([0x80, note, 0x00], delay);
+        }
+
+        setVolume (volume: number): MIDIMessage {
+            return new MIDIMessage([0xB0, 0x07, volume]);
+        }
+
+        changeProgram (program: number): MIDIMessage {
+            return new MIDIMessage([0xC0, program]);
         }
 
         setVoice (voice: Array<number>, memory: number = 0x00): MIDIMessage {
