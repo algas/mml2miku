@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-mocha-phantomjs');
+    grunt.loadNpmTasks('grunt-este-watch');
     grunt.initConfig({
         typescript: {
             main: {
@@ -23,8 +24,20 @@ module.exports = function(grunt) {
         },
         mocha_phantomjs: {
             all: ['test.html']
+        },
+        esteWatch: {
+            options: {
+                dirs: ['src', 'tests']
+            },
+            livereload: {
+                'enabled': 'false'
+            },
+            'ts': function(filepath) {
+                return ['typescript:main', 'typescript:test', 'mocha_phantomjs:all'];
+            }
         }
     });
     grunt.registerTask('build', ['typescript']);
     grunt.registerTask('test', ['mocha_phantomjs']);
+    grunt.registerTask('server', ['esteWatch']);
 };
