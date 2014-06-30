@@ -1,0 +1,19 @@
+{
+  "name": "mml2miku",
+  "version": "0.0.3",
+  "description": "MML (Music Macro Language) interpreter written in JavaScript. This is desined for nsx-39.",
+  "homepage": "https://github.com/algas/mml2miku",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algas/mml2miku.git"
+  },
+  "author": "Masahiro Yamauchi",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "~1.9.1",
+    "mocha-phantomjs": "~3.4.1",
+    "grunt": "~0.4.5",
+    "grunt-typescript": "~0.3.7",
+    "grunt-mocha-phantomjs": "~0.5.0"
+  }
+}

@@ -6,3 +6,4 @@ built/
 *.sublime-project
 *.sublime-workspace
 src/*.js
+node_modules

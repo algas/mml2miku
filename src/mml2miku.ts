@@ -1,6 +1,6 @@
 /*!
  * mml2miku JavaScript (TypeScript) Library v0.0.3
- * https://github.com/algas/mml2miku
+ * https://github.com/algas/mml2miku.git
  *
  * Copyright 2014 Masahiro Yamauchi
  * Released under the MIT license
