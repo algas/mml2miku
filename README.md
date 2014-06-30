@@ -38,8 +38,13 @@ See [mml reference](https://github.com/algas/mml2miku/blob/master/docs/mml.md)
 
 ## Test
 
-JavaScript unit testing
-Mocha, Chai and Phantom (mocha-phantom)
+Run the following commands to test
+
+```
+npm install
+grunt build
+grunt test
+```
 
 ## License
 
