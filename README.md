@@ -46,6 +46,13 @@ grunt build
 grunt test
 ```
 
+Automatic build and test
+
+```
+npm install
+grunt server
+```
+
 ## License
 
 The MIT License (MIT)
