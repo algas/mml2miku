@@ -25,6 +25,6 @@ module.exports = function(grunt) {
             all: ['test.html']
         }
     });
-    grunt.registerTask('compile', ['typescript']);
+    grunt.registerTask('build', ['typescript']);
     grunt.registerTask('test', ['mocha_phantomjs']);
 };
