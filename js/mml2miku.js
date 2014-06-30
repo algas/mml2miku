@@ -1,6 +1,6 @@
 /*!
 * mml2miku JavaScript (TypeScript) Library v0.0.3
-* https://github.com/algas/mml2miku
+* https://github.com/algas/mml2miku.git
 *
 * Copyright 2014 Masahiro Yamauchi
 * Released under the MIT license
@@ -354,7 +354,6 @@ var MIDI;
             this.tempo = 60;
             this.octave = 4;
             this.velocity = 127;
-            this.voice = 0;
         }
         MIDIData.prototype.toMessages = function (commands) {
             var c = null;
@@ -434,9 +433,7 @@ var MIDI;
         };
 
         MIDIData.prototype.setParameter = function (c) {
-            if (c instanceof Voice) {
-                this.voice = c.val;
-            } else if (c instanceof Length) {
+            if (c instanceof Length) {
                 this.len = c.val;
             } else if (c instanceof Tempo) {
                 this.tempo = c.val;

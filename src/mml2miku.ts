@@ -286,7 +286,6 @@ module MIDI {
             this.tempo = 60;
             this.octave = 4;
             this.velocity = 127;
-            this.voice = 0;
         }
 
         toMessages (commands: Array<MIDICommand>): Array<Array<MIDIMessage>> {
@@ -370,9 +369,7 @@ module MIDI {
         }
 
         setParameter (c: MIDICommand) {
-            if (c instanceof Voice) {
-                this.voice = c.val;
-            } else if (c instanceof Length) {
+            if (c instanceof Length) {
                 this.len = c.val;
             } else if (c instanceof Tempo) {
                 this.tempo = c.val;
