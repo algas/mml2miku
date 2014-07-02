@@ -1,7 +1,9 @@
 # mml2miku
 
-MML (Music Macro Language) interpreter written in JavaScript.
-This is desined for nsx-39.
+![travis status](https://travis-ci.org/algas/mml2miku.svg?branch=master)
+
+MML (Music Macro Language) interpreter written in JavaScript and TypeScript.  
+This supports General MIDI output devices which include nsx-39 (Miku Keyboard).
 
 ## Setup
 
