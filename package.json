@@ -9,6 +9,9 @@
   },
   "author": "Masahiro Yamauchi",
   "license": "MIT",
+  "scripts": {
+    "test": "grunt test"
+  },
   "devDependencies": {
     "chai": "~1.9.1",
     "mocha-phantomjs": "~3.4.1",
